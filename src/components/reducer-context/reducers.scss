@@ -1,0 +1,42 @@
+.userGreeting{
+  margin-left: .7rem;
+  //border: 1px solid black;
+  border-radius:0.2rem ;
+  padding: 0.4rem 1.5rem 0.3rem 2rem;
+  background-color:  rgba(37, 81, 187, 0.6);
+  color: white;
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 1rem;
+  letter-spacing: .1rem;
+  font-family: 'Roboto Slab', serif;
+}
+
+@media screen and (max-width: 992px){
+    .logOutBtnWrapper{
+      display: flex;
+      background-color: #343a40!important;
+    }
+
+    .userGreeting{
+      background-color: transparent;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      color: cornflowerblue;
+    }
+
+
+    .greetingImg{
+      display: none;
+    }
+}
+
+.fbBtnMedium,.fbBtnSmall{
+  cursor: pointer;
+}
+
+.navbar-nav{
+  background-color: #343a40!important;
+}
+

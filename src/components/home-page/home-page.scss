@@ -1,0 +1,39 @@
+body html .root{
+  width: 100% !important;
+  padding: 0;
+  margin: 0;
+}
+
+.article-wrapper{
+  padding: 3rem;
+}
+@media screen and (max-width: 750px) {
+  .article-wrapper{
+    padding: 20px 0 0 0;
+  }
+}
+
+.article-header{
+  font-family: 'Roboto Slab', serif;
+  font-size: 150%;
+}
+
+.col-article-paragraph{
+  padding: 50px;
+  p{
+    font-size: 24px;
+    line-height: 1.8rem;
+    word-spacing: .3rem;
+  }
+}
+
+.container-loginFalse{
+  div{
+    div{
+      p{
+        color: white;
+        font-size: 150%;
+      }
+    }
+  }
+}

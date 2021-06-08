@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{my-blog/node_modules}" />
+    <file url="PROJECT" libraries="{@types/bootstrap, @types/react-native, @types/react-router, @types/react-router-dom, @types/react-router-param-link, bootstrap, my-blog/node_modules, react, react-bootstrap, react-dom}" />
+  </component>
+</project>
