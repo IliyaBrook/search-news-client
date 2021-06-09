@@ -10,7 +10,7 @@ const LogIn = (props) => {
         event.preventDefault()
         logInStateDispatch({type: LOGIN_ACTIONS.FORM_SUBMITTED_STATE,state:true})
         if (logInState.formData['user_name'] && logInState.formData['user_password']) {
-            const url = 'http://127.0.0.1:5001/login'
+            const url = 'https://search-news-server.herokuapp.com/login'
             const response = await fetch(url, {
                 method: 'POST',
                 mode: 'cors',
@@ -35,6 +35,8 @@ const LogIn = (props) => {
                     }})
                 localStorage.setItem('token',response.token)
                 localStorage.setItem('name', response.first_name + ' ' + response.last_name)
+                console.log(response)
+                console.log(logInState)
 
             }
             response?.loggedIn && history.push('/')
