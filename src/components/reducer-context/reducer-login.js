@@ -75,7 +75,7 @@ const ReducerLogin = ({children}) => {
                     formSubmitted: false,
                     userData: {
                         email: "",
-                        loggedIn: "",
+                        loggedIn: false,
                         name: "",
                         token: "",
                         user_id: "",
@@ -90,7 +90,7 @@ const ReducerLogin = ({children}) => {
         formSubmitted: false,
         formData: {user_name: "", user_password: ""},
         userData: {
-            loggedIn: '',
+            loggedIn: false,
             token: ''
         }
     })
