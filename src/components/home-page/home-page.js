@@ -23,30 +23,38 @@ const HomePage = () => {
         newsDataState: {newsData, newsInputValue},
         newsDispatch
     } = useContext(ContextNews)
-    const time = new Date()
-    const twoDayBefore = `from=${time.getFullYear()}-${time.getUTCMonth() + 1}-${time.getUTCDate() - 2}&`
-    const newsApiKey = process.env.REACT_APP_NEWSAPI
-    const url = 'https://newsapi.org/v2/everything?' +
-        `q=${newsInputValue}&` +
-        twoDayBefore +
-        'sortBy=popularity&' +
-        `apiKey=${newsApiKey}`;
 
     const [dataLoadErr, setDataLoadErr] = useState({
         error: '',
         errorState: false
     })
     const [isDataLoaded, setIsDataLoaded] = useState(false)
-    const getNewsData = useCallback(async () => {
+
+    const getNewsData = async () => {
         setDataLoadErr(false)
         setIsDataLoaded(true)
-        const response = await fetch(url).then(res => {
+
+        const url = `https://bing-news-search1.p.rapidapi.com/news/search?q=${newsInputValue}&safeSearch=Off&textFormat=Raw&freshness=Day`
+        const response = await fetch(url,{
+            method: "GET",
+            headers: {
+                "x-bingapis-sdk": "true",
+                "x-rapidapi-key": "1b72454c45msh40fbb56025a3fc3p11f9cfjsn16b3e675f020",
+                "x-rapidapi-host": "bing-news-search1.p.rapidapi.com"
+            }
+        }).then(res => {
             return res.json()
         }).catch(error => setDataLoadErr({error: error, errorState: true}))
+        console.log(response)
+        
+        
+        response.value.forEach(element => {
+            console.log(element.image.thumbnail.contentUrl)
+        });
 
         setIsDataLoaded(false)
-        newsDispatch({type: SET_NEWS_DATA, newsDataPayload: response.articles})
-    }, [SET_NEWS_DATA, newsDispatch, url])
+        newsDispatch({type: SET_NEWS_DATA, newsDataPayload: response.value})
+    }
 
     const renderArticles = useCallback(
         () => {
@@ -63,6 +71,7 @@ const HomePage = () => {
     useEffect(() => {
         return focus()
     },[])
+
     let submitFormRef = useRef(false)
     const [ placeholder , setPlaceholder ] = useState('Which news do you want to search for today')
     const renderNewsContentIfLogin = () => {
