@@ -45,12 +45,7 @@ const HomePage = () => {
         }).then(res => {
             return res.json()
         }).catch(error => setDataLoadErr({error: error, errorState: true}))
-        console.log(response)
-        
-        
-        response.value.forEach(element => {
-            console.log(element.image.thumbnail.contentUrl)
-        });
+
 
         setIsDataLoaded(false)
         newsDispatch({type: SET_NEWS_DATA, newsDataPayload: response.value})

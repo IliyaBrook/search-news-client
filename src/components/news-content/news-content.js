@@ -11,15 +11,15 @@ const NewsContent = (newsData) => {
                         <div className="col-sm-4 article-header">
                             {newsData.name} title
                         </div>
-                        <img src={newsData.image.thumbnail.contentUrl} alt="articles_imt" className="img-fluid"/>
+                        <img src={newsData?.image?.thumbnail?.contentUrl} alt="articles_imt" className="img-fluid"/>
                         <div className="col-sm-4"/>
                     </div>
                     <div className="row">
                         <div className="col-sm-12 jumbotron col-article-paragraph">
                             <p className="font-monospace">
-                                {newsData.description}
+                                {newsData?.description}
                             </p>
-                            <a href={newsData.url}>News Source</a>/>
+                            <a href={newsData?.url}>News Source</a>/>
                         </div>
                     </div>
                 </div>
