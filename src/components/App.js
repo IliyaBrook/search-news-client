@@ -8,11 +8,13 @@ import LogIn from "./login/log-in";
 import ContextReducerLogIn from "./reducer-context/reducer-login";
 import {FacebookLoginContext} from "./reducer-context/reducer-facebook-login";
 import ReducerNewsContext from "./reducer-context/reducer-news";
+import ReducerRestContext from "./reducer-context/rest-reducer";
 
 
 
 const App = () => {
     return (
+        <ReducerRestContext>
             <ReducerNewsContext>
                 <FacebookLoginContext>
                     <ContextReducerLogIn>
@@ -26,6 +28,7 @@ const App = () => {
                     </ContextReducerLogIn>
                 </FacebookLoginContext>
             </ReducerNewsContext>
+        </ReducerRestContext>
     )
 }
 

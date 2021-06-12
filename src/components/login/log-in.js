@@ -1,11 +1,12 @@
 import {Button, Form} from "react-bootstrap";
-import React, { useContext } from "react";
+import React, {useContext, useState} from "react";
 import {Link, useHistory } from "react-router-dom"
 import {ContextReducerLogIn} from "../reducer-context/reducer-login";
 
 const LogIn = (props) => {
     const { logInStateDispatch , logInState ,LOGIN_ACTIONS } = useContext(ContextReducerLogIn)
     const history = useHistory()
+    const [ logInErrors , SetLogInErrors ] = useState()
     const submit = async (event) => {
         event.preventDefault()
         logInStateDispatch({type: LOGIN_ACTIONS.FORM_SUBMITTED_STATE,state:true})
@@ -29,18 +30,20 @@ const LogIn = (props) => {
                         user_name:response?.user_name,
                         name: `${response?.first_name} ${response?.last_name}`,
                         email:response?.email,
-                        loggedIn: true,
+                        loggedIn: response.loggedIn,
                         user_id: response?.user_id,
                         token:response.token
-                    }})
+                    }
+                })
                 localStorage.setItem('token',response.token)
                 localStorage.setItem('name', response.first_name + ' ' + response.last_name)
-                console.log(response)
-                console.log(logInState)
-
+                response?.loggedIn && history.push('/')
             }
-            response?.loggedIn && history.push('/')
+            return  !response.loggedIn &&  SetLogInErrors(() => {
+                return  formAlert('Login failed, please check your credentials!','alert alert-danger')
+            })
         }
+
     }
     const navBar = () => {
         const additionalBtn = (
@@ -75,14 +78,12 @@ const LogIn = (props) => {
     return (
         <div onClick={() => logInStateDispatch({type: LOGIN_ACTIONS.FORM_SUBMITTED_FALSE})}>
             {navBar()}
-
             <div className='container content-container-login'>
                 <p className='card-title m-2'>Log-in Form</p>
                 <div className='container-fluid m-5 Login-container-form'>
                     <Form onSubmit={submit}>
                         <div className="form-content">
-                            {logInState.userData.loggedIn === false && logInState.formSubmitted &&
-                            formAlert('Login failed, please check your credentials!','alert alert-danger')}
+                            {logInErrors}
                             <Form.Group>
                                 <span>{logInState.formSubmitted && !logInState.formData['user_name'] &&
                                 formAlert('Please insert user name','font-italic alert-text-style')}</span>

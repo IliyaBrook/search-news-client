@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useContext, useRef, useState} from "react";
+import React, {Fragment, useCallback, useContext, useEffect, useRef, useState} from "react";
 import './home-page.scss'
 import NavBarMain from "../nav-bars/nav-bar-main/nav-bar-main";
 import NewsContent from "../news-content/news-content";
@@ -58,24 +58,31 @@ const HomePage = () => {
         }
         , [newsData])
 
-
     const searchFormRef = useRef()
+    const focus = () => searchFormRef.current?.focus()
+    useEffect(() => {
+        return focus()
+    },[])
     let submitFormRef = useRef(false)
-
+    const [ placeholder , setPlaceholder ] = useState('Which news do you want to search for today')
     const renderNewsContentIfLogin = () => {
         const submitNewsForm = (event) => {
             event.preventDefault()
-            submitFormRef.current = true
-            getNewsData().catch(err => console.log(err))
-            searchFormRef.current.value = ''
+            if (searchFormRef.current.value !== '') {
+                setPlaceholder()
+                submitFormRef.current = true
+                getNewsData().catch(err => console.log(err))
+                searchFormRef.current.value = ''
+            }else {
+                setPlaceholder('Empty query!')
+            }
         }
         if (localStorage.getItem('token') || localStorage.getItem('fblst_1206500839845709')) {
             return (
                 <Fragment>
-                    {SearchingForm('Please insert query', submitNewsForm, (event) => {
+                    {SearchingForm( placeholder , submitNewsForm,  (event) => {
                             newsDispatch({type: SET_NEWS_INPUT_VALUE, newsInputValuePayload: event.target.value})
-                        }
-                        , searchFormRef)}
+                        }, searchFormRef)}
                     {isDataLoaded ? <NewsSpinner/> : renderArticles()}
                     {dataLoadErr.errorState && JSON.stringify(dataLoadErr.error)}
                 </Fragment>

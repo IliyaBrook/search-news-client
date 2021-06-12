@@ -21,7 +21,8 @@ const ReducerLogin = ({children}) => {
     const backendDbToken = localStorage.getItem('token')
     useEffect( () => {
         if (!fbToken && backendDbToken) {
-            const server_response =  fetch('http://127.0.0.1:5001/token', {
+            const server_response =  fetch('https://search-news-server.herokuapp.com/token', {
+                mode:'cors',
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${backendDbToken}`
@@ -65,12 +66,16 @@ const ReducerLogin = ({children}) => {
             case LOGIN_ACTIONS.SET_TOKEN:
                 return {...state, token: action.token}
             case LOGIN_ACTIONS.SET_LOGOUT:
+                if (localStorage.getItem('token')){
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('name')
+                }
                 return {
                     formData: {user_name: "", user_password: ""},
                     formSubmitted: false,
                     userData: {
                         email: "",
-                        loggedIn: false,
+                        loggedIn: "",
                         name: "",
                         token: "",
                         user_id: "",
@@ -85,7 +90,7 @@ const ReducerLogin = ({children}) => {
         formSubmitted: false,
         formData: {user_name: "", user_password: ""},
         userData: {
-            loggedIn: false,
+            loggedIn: '',
             token: ''
         }
     })

@@ -1,21 +1,26 @@
-import React, {useContext} from "react";
+import React, {useContext, useRef} from "react";
 import {Nav, Navbar} from "react-bootstrap";
 import './nav-bar.scss'
 import {Link} from "react-router-dom"
 import {ContextReducerFbLogin} from "../../reducer-context/reducer-facebook-login";
 import {ContextReducerLogIn} from "../../reducer-context/reducer-login";
+import {RestContext} from "../../reducer-context/rest-reducer";
 
 
 
 const NavBarMain = () => {
     const {FaceBookBtn, fbLoginState, fbStateDispatch} = useContext(ContextReducerFbLogin)
     const {userGreeting, logInState, logInStateDispatch} = useContext(ContextReducerLogIn)
+
+    const { useOutSide , navCollapseState:{ collapse }, navCollapseDispatch , ACTIONS_NAVBAR:{
+        NAVBAR_COLLAPSE,NAVBAR_TOGGLE
+    }} = useContext(RestContext)
+
     const logOutBtn = () => {
         if (fbLoginState.token || logInState.userData.token) {
             return <div className="logOutBtnWrapper">
                 <div onClick={() => {
-                    localStorage.removeItem('token')
-                    window.FB.logout()
+                    window.FB?.logout()
                     logInStateDispatch({type: 'SET_LOGOUT'})
                     fbStateDispatch({type: 'SET_LOGOUT'})
                 }} className="my-links-styles text-danger btn logoutBtn">Logout
@@ -34,14 +39,18 @@ const NavBarMain = () => {
         </div>
     }
 
+    const navRef = useRef()
+
+    useOutSide( navRef, navCollapseDispatch,{type:NAVBAR_COLLAPSE} )
+
     return (
         <div  className="navbar-wrapper ">
-            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
+            <Navbar  collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top" expanded={ collapse } ref={navRef}>
                 <div className="my-links-styles">
                     <Link to="/">Home Page</Link>
                 </div>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-                <Navbar.Collapse id="responsive-navbar-nav">
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={() => navCollapseDispatch({type:NAVBAR_TOGGLE}) }/>
+                <Navbar.Collapse id="responsive-navbar-nav" >
                     <Nav className="mr-auto">
                         {logOutBtn()}
                     </Nav>
