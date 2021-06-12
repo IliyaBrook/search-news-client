@@ -51,7 +51,7 @@ const HomePage = () => {
     const renderArticles = useCallback(
         () => {
             let key = 1
-            return newsData.map(elem => {
+            return newsData?.map(elem => {
                 key++
                 return <div key={key}>{NewsContent(elem)}</div>
             })
