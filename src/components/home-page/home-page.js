@@ -91,7 +91,7 @@ const HomePage = () => {
                     {dataLoadErr.errorState && JSON.stringify(dataLoadErr.error)}
                 </Fragment>
             )
-        } else if (!localStorage.getItem('token') || !localStorage.getItem('fblst_1206500839845709')) {
+        } else if (!localStorage.getItem('token') && !localStorage.getItem('fblst_1206500839845709')) {
             return (
                 <div className="d-flex align-content-center min-vh-100 min-vw-100 jumbotron pt-5">
 
