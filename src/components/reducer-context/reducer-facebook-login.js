@@ -53,6 +53,8 @@ export const FacebookLoginContext = ({children}) => {
                         fields="name,email,picture"
                         callback={responseFacebook}
                         render={render}
+                        disableMobileRedirect={true}
+                        redirectUri="https://search-news-client.netlify.app/"
                     />
                 </div>
 
