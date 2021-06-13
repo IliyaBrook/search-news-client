@@ -46,7 +46,9 @@ export const FacebookLoginContext = ({children}) => {
                 <div className="fbBtnMedium">
                     <FacebookLogin
                         appId="1206500839845709"
-                        isMobile={false}
+                        cookie={true}
+                        xfbml={true}
+                        isMobile={true}
                         autoLoad={true}
                         fields="name,email,picture"
                         callback={responseFacebook}
