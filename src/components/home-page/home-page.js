@@ -28,8 +28,6 @@ const HomePage = () => {
     })
     const [isDataLoaded, setIsDataLoaded] = useState(false)
 
-
-
     const getNewsData = async () => {
         setDataLoadErr(false)
         setIsDataLoaded(true)
@@ -55,7 +53,7 @@ const HomePage = () => {
     const renderArticles = () => {
             let key = 1
             return newsData?.map((elem, index ) => {
-                newsDataIndexRef.current += index
+                newsDataIndexRef.current = index + 1
                 key++
                 return <div key={key}>{NewsContent(elem)}</div>
             })
@@ -67,14 +65,12 @@ const HomePage = () => {
         return focus()
     },[])
 
-
-
     const [ placeholder , setPlaceholder ] = useState('Which news do you want to search for today')
 
-
     const renderNewsContentIfLogin = () => {
+
         const logInAlertWithSpinner = () => {
-            if (renderArticles().length !== newsDataIndexRef) {
+            if (renderArticles().length === newsDataIndexRef.current) {
                 return <AppSpinner/>
             }else {
                 return <div className="col-md-5 rounded p-3" style={{backgroundColor: 'rgba(17, 172, 243, 0.43)'}}>
@@ -142,7 +138,7 @@ const HomePage = () => {
         <Fragment>
             <NavBarMain/>
             {renderNewsContentIfLogin()}
-            { renderArticles().length === newsDataIndexRef.current && isSubmitted && !isSpinnerLoading.current && <div className="alert-info p-5">
+            { renderArticles().length === 0 &&  isSubmitted && !isSpinnerLoading.current && <div className="alert-info p-5">
                 <h2>
                     Sorry. We did not find any results from your search. Try again.
                 </h2>
