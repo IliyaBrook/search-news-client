@@ -17,10 +17,9 @@ const NavBarMain = () => {
     }} = useContext(RestContext)
 
     const logOutBtn = () => {
-        if (fbLoginState.token || logInState.userData.token) {
+        if (fbLoginState?.token || logInState?.userData.token) {
             return <div className="logOutBtnWrapper">
                 <div onClick={() => {
-                    window.FB?.logout()
                     logInStateDispatch({type: 'SET_LOGOUT'})
                     fbStateDispatch({type: 'SET_LOGOUT'})
                 }} className="my-links-styles text-danger btn logoutBtn">Logout
@@ -55,12 +54,11 @@ const NavBarMain = () => {
                         {logOutBtn()}
                     </Nav>
                     <Nav>
-                        {!logInState.userData.token && !fbLoginState.token && LoginBtn()}
-                        {!logInState.userData.token && !fbLoginState.token && registrationBtn()}
-                        {!logInState.userData.token && !fbLoginState.token && <FaceBookBtn btnClassNames={"d-none d-lg-block"}/>}
+                        {!logInState.userData?.token && !fbLoginState?.token && LoginBtn()}
+                        {!logInState.userData?.token && !fbLoginState?.token && registrationBtn()}
+                        {!logInState.userData?.token && !fbLoginState?.token && <FaceBookBtn btnClassNames={"d-none d-lg-block"}/>}
                         {/*if size MEDIUM*/}
-                        {!logInState.userData.token &&
-                        !fbLoginState.token && <FaceBookBtn btnClassNames={'d-sm-block d-md-block d-lg-none'}
+                        {!logInState.userData?.token && !fbLoginState?.token && <FaceBookBtn btnClassNames={'d-sm-block d-md-block d-lg-none'}
                                                             render={renderProps => (
                                                                 <div onClick={renderProps.onClick} style={{
                                                                     color:'#4267B2',

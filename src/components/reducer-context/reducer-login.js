@@ -96,9 +96,9 @@ const ReducerLogin = ({children}) => {
     })
     const userGreeting = () => {
         const name = () => {
-            if (logInState.userData.token) {
+            if (logInState.userData?.token) {
                 return <div className="userGreeting">{logInState.userData.name}</div>
-            } else if (fbLoginState.token) {
+            } else if (fbLoginState?.token) {
                 return (
                     <Fragment>
                         <div className="d-flex w-75 justify-content-center">

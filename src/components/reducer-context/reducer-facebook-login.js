@@ -8,11 +8,17 @@ export const ContextReducerFbLogin = createContext(null)
 export const FacebookLoginContext = ({children}) => {
     const changeLogin = 'changeLogin'
     const SET_LOGOUT = 'SET_LOGOUT'
+
     const fbReducer = (state, action) => {
         switch (action?.type) {
             case changeLogin:
                 return {...state, ...action.fbSetData}
             case SET_LOGOUT:
+                if (sessionStorage?.getItem('fbssls_1206500839845709') || localStorage?.getItem('fblst_1206500839845709')){
+                    sessionStorage.removeItem('fbssls_1206500839845709')
+                    localStorage.removeItem('fblst_1206500839845709')
+                    window.FB.logout()
+                }
                 return {
                     email: '',
                     id: '',
@@ -24,6 +30,8 @@ export const FacebookLoginContext = ({children}) => {
                 return state
         }
     }
+
+
     const fbBtnElemRef = useRef()
     const FaceBookBtn = ({
         btnClassNames ,
@@ -51,6 +59,7 @@ export const FacebookLoginContext = ({children}) => {
                         xfbml={true}
                         isMobile={true}
                         autoLoad={true}
+                        status={true}
                         fields="name,email,picture"
                         callback={responseFacebook}
                         render={render}
@@ -71,6 +80,7 @@ export const FacebookLoginContext = ({children}) => {
         id: '',
         token: ''
     })
+
 
     return (
         <ContextReducerFbLogin.Provider value={{FaceBookBtn, fbLoginState, fbStateDispatch, fbBtnElemRef}}>

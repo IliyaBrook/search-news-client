@@ -1,8 +1,18 @@
 import React, {createContext, useEffect, useReducer} from "react";
+import {Spinner} from "react-bootstrap";
 
 export const RestContext = createContext()
 
 const ReducerRestContext = ( { children } ) => {
+
+
+    const AppSpinner = () => {
+        return (
+            <div className="d-flex w-100 justify-content-center align-items-center">
+                <Spinner className="p-5" animation="border"/>
+            </div>
+        )
+    }
 
     const useOutSide = (ref, retFuncIfOutSideClick,...funcArgs) => {
         useEffect(() => {
@@ -37,7 +47,7 @@ const ReducerRestContext = ( { children } ) => {
     const [ navCollapseState , navCollapseDispatch ] = useReducer(navBarReducer, {collapse:false})
 
     return (
-        <RestContext.Provider value={{ navCollapseState , navCollapseDispatch , ACTIONS_NAVBAR , useOutSide }}>
+        <RestContext.Provider value={{ navCollapseState , navCollapseDispatch , ACTIONS_NAVBAR , useOutSide , AppSpinner }}>
             { children }
         </RestContext.Provider>
     )
