@@ -5,14 +5,14 @@ export const RestContext = createContext()
 
 const ReducerRestContext = ( { children } ) => {
 
-
-    const AppSpinner = () => {
-        return (
-            <div className="d-flex w-100 justify-content-center align-items-center">
+    const AppSpinner = ( { spinnerOff = false } ) => {
+        if (!spinnerOff) {
+            return <div className="d-flex w-100 justify-content-center align-items-center">
                 <Spinner className="p-5" animation="border"/>
             </div>
-        )
+        }
     }
+
 
     const useOutSide = (ref, retFuncIfOutSideClick,...funcArgs) => {
         useEffect(() => {

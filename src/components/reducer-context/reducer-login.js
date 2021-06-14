@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useReducer} from "react";
+import React, {Fragment, useContext, useEffect, useReducer, useState} from "react";
 import {ContextReducerFbLogin} from "./reducer-facebook-login";
 import './reducers.scss'
 
@@ -19,7 +19,10 @@ const ReducerLogin = ({children}) => {
     const {fbLoginState} = useContext(ContextReducerFbLogin)
     const fbToken = localStorage.getItem('fblst_1206500839845709')
     const backendDbToken = localStorage.getItem('token')
+
+    const [isLoginDataLoading , setLoginDataLoading ] = useState(false)
     useEffect( () => {
+        setLoginDataLoading(true)
         if (!fbToken && backendDbToken) {
             const server_response =  fetch('https://search-news-server.herokuapp.com/token', {
                 mode:'cors',
@@ -29,6 +32,7 @@ const ReducerLogin = ({children}) => {
                     }
                 }
             ).then(res => {
+                setLoginDataLoading(false)
                 if (res.status === 200) return res.json()
             })
             logInStateDispatch({
@@ -113,7 +117,7 @@ const ReducerLogin = ({children}) => {
     }
     return (
         <ContextReducerLogIn.Provider value={{
-            LOGIN_ACTIONS, logInState, logInStateDispatch, userGreeting
+            LOGIN_ACTIONS, logInState, logInStateDispatch, userGreeting, isLoginDataLoading
         }}>
             {children}
         </ContextReducerLogIn.Provider>

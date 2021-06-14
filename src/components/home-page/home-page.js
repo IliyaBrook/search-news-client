@@ -64,14 +64,15 @@ const HomePage = () => {
     useEffect(() => {
         return focus()
     },[])
-
     const [ placeholder , setPlaceholder ] = useState('Which news do you want to search for today')
 
     const renderNewsContentIfLogin = () => {
 
         const logInAlertWithSpinner = () => {
-            if (renderArticles().length === newsDataIndexRef.current) {
+
+            if (!renderArticles().length && !newsDataIndexRef.current && localStorage.getItem('fblst_1206500839845709') !== null) {
                 return <AppSpinner/>
+            }else if (!renderArticles().length && !newsDataIndexRef.current && localStorage.getItem('token') !== null) {
             }else {
                 return <div className="col-md-5 rounded p-3" style={{backgroundColor: 'rgba(17, 172, 243, 0.43)'}}>
                     <FaceBookBtn

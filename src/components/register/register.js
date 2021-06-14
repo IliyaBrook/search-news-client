@@ -1,8 +1,9 @@
 import {Button, Form} from "react-bootstrap";
-import React, {useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {Link} from "react-router-dom"
 import './register.scss'
 import {useHistory} from "react-router";
+import {RestContext} from "../reducer-context/rest-reducer";
 
 const Register = (props) => {
     const [formInputs, setFormInput] = useState({
@@ -12,6 +13,8 @@ const Register = (props) => {
         "email": '',
         "password": ''
     })
+    const { AppSpinner  } = useContext(RestContext)
+
     const [ passErrorCancel, setPassErrorCancel] = useState(false)
     const [ serverResJson , setServerResJson ] = useState({})
     const [ confPasswordValue , setConfPasswordValue ] = useState()
@@ -37,7 +40,9 @@ const Register = (props) => {
     }
 
     const history = useHistory()
+    const [ isRegisterDataLoaded , setIsRegisterDataLoaded ] = useState(false)
     const submit = async (event) => {
+        setIsRegisterDataLoaded(true)
         setPassErrorCancel(true)
         setCancelErrorInput(true)
         event.preventDefault()
@@ -48,6 +53,7 @@ const Register = (props) => {
                 body: JSON.stringify(formInputs)
             }).then((res) => {
                 if (res.status === 200) {
+                    setIsRegisterDataLoaded(false)
                     return res.json()
                 }
             })
@@ -89,62 +95,70 @@ const Register = (props) => {
             {navBar()}
             <div className='container content-container-login'>
                 <p className='card-title m-2'>Registration Form</p>
+                {
+                    isRegisterDataLoaded && <div className="mt-5">
+                        <AppSpinner/>
+                    </div>
+                }
 
-                <div className='container-fluid m-5 Login-container-form'>
-                    <Form onSubmit={submit}>
+                {
+                    !isRegisterDataLoaded && <div className='container-fluid m-5 Login-container-form'>
+                        <Form onSubmit={submit}>
 
-                        <div className="form-content">
-                            <Form.Group>
-                                <span>{passErrorCancel && emptyInputAlert('first_name', 'First name cannot be empty!')}</span>
-                                <Form.Control
-                                    placeholder="Enter first name"
-                                    name="first_name"
-                                    onChange={change}
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                <span>{passErrorCancel && emptyInputAlert('last_name', 'Last name cannot be empty!')}</span>
-                                <Form.Control placeholder="Enter last name"
-                                              name="last_name"
-                                              onChange={change}
-                                />
-                            </Form.Group>
+                            <div className="form-content">
+                                <Form.Group>
+                                    <span>{passErrorCancel && emptyInputAlert('first_name', 'First name cannot be empty!')}</span>
+                                    <Form.Control
+                                        placeholder="Enter first name"
+                                        name="first_name"
+                                        onChange={change}
+                                    />
+                                </Form.Group>
+                                <Form.Group>
+                                    <span>{passErrorCancel && emptyInputAlert('last_name', 'Last name cannot be empty!')}</span>
+                                    <Form.Control placeholder="Enter last name"
+                                                  name="last_name"
+                                                  onChange={change}
+                                    />
+                                </Form.Group>
 
-                            <Form.Group>
-                                <span>{serverResJson?.['user_name_duplicate'] && formAlert('Username already exists')}</span>
-                                <span>{passErrorCancel && minLengthInputAlert('user_name','error_min_length_5','User name min length 5')}</span>
-                                <Form.Control placeholder="Enter user name"
-                                              name="user_name"
-                                              onChange={change}
-                                />
-                            </Form.Group>
-                            <span>{passErrorCancel && emptyInputAlert('user_email', 'Please fill in email address!')}</span>
-                            {serverResJson?.['user_email_duplicate'] && formAlert('Email already exists')}
-                            <Form.Group controlId="formBasicEmail">
-                                <Form.Control type="email" placeholder="Enter email"
-                                              name="email"
-                                              onChange={change}
-                                />
-                            </Form.Group>
+                                <Form.Group>
+                                    <span>{serverResJson?.['user_name_duplicate'] && formAlert('Username already exists')}</span>
+                                    <span>{passErrorCancel && minLengthInputAlert('user_name','error_min_length_5','User name min length 5')}</span>
+                                    <Form.Control placeholder="Enter user name"
+                                                  name="user_name"
+                                                  onChange={change}
+                                    />
+                                </Form.Group>
+                                <span>{passErrorCancel && emptyInputAlert('user_email', 'Please fill in email address!')}</span>
+                                {serverResJson?.['user_email_duplicate'] && formAlert('Email already exists')}
+                                <Form.Group controlId="formBasicEmail">
+                                    <Form.Control type="email" placeholder="Enter email"
+                                                  name="email"
+                                                  onChange={change}
+                                    />
+                                </Form.Group>
 
-                            <Form.Group>
-                                <span>{passErrorCancel && minLengthInputAlert('password','error_min_length_8','Password min length 8')}</span>
-                                <Form.Control type="password" placeholder="Password"
-                                              name="password"
-                                              onChange={change}
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                {confPasswordValue && checkPassMatch()}
+                                <Form.Group>
+                                    <span>{passErrorCancel && minLengthInputAlert('password','error_min_length_8','Password min length 8')}</span>
+                                    <Form.Control type="password" placeholder="Password"
+                                                  name="password"
+                                                  onChange={change}
+                                    />
+                                </Form.Group>
+                                <Form.Group>
+                                    {confPasswordValue && checkPassMatch()}
 
-                                <Form.Control type="password" placeholder="Password confirm"
-                                              onChange={event => setConfPasswordValue(event.target.value)}
-                                />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">Submit</Button>
-                        </div>
-                    </Form>
-                </div>
+                                    <Form.Control type="password" placeholder="Password confirm"
+                                                  onChange={event => setConfPasswordValue(event.target.value)}
+                                    />
+                                </Form.Group>
+                                <Button variant="primary" type="submit">Submit</Button>
+                            </div>
+                        </Form>
+                    </div>
+                }
+
             </div>
         </div>
     )

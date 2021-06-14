@@ -2,13 +2,18 @@ import {Button, Form} from "react-bootstrap";
 import React, {useContext, useState} from "react";
 import {Link, useHistory } from "react-router-dom"
 import {ContextReducerLogIn} from "../reducer-context/reducer-login";
+import {RestContext} from "../reducer-context/rest-reducer";
 
 const LogIn = (props) => {
     const { logInStateDispatch , logInState ,LOGIN_ACTIONS } = useContext(ContextReducerLogIn)
+    const { AppSpinner  } = useContext(RestContext)
     const history = useHistory()
     const [ logInErrors , SetLogInErrors ] = useState()
+    const [ dataLogInLoading , setDataLogInLoading ] = useState(false)
+
     const submit = async (event) => {
         event.preventDefault()
+        setDataLogInLoading(true)
         logInStateDispatch({type: LOGIN_ACTIONS.FORM_SUBMITTED_STATE,state:true})
         if (logInState.formData['user_name'] && logInState.formData['user_password']) {
             const url = 'https://search-news-server.herokuapp.com/login'
@@ -25,6 +30,7 @@ const LogIn = (props) => {
                 }
             }).catch((error) => console.log(error))
             if(response?.token !== undefined){
+                setDataLogInLoading(false)
                 logInStateDispatch({
                     type: LOGIN_ACTIONS.SET_USER_DATA,updateUserData:{
                         user_name:response?.user_name,
@@ -78,31 +84,39 @@ const LogIn = (props) => {
     return (
         <div onClick={() => logInStateDispatch({type: LOGIN_ACTIONS.FORM_SUBMITTED_FALSE})}>
             {navBar()}
-            <div className='container content-container-login'>
-                <p className='card-title m-2'>Log-in Form</p>
-                <div className='container-fluid m-5 Login-container-form'>
-                    <Form onSubmit={submit}>
-                        <div className="form-content">
-                            {logInErrors}
-                            <Form.Group>
-                                <span>{logInState.formSubmitted && !logInState.formData['user_name'] &&
-                                formAlert('Please insert user name','font-italic alert-text-style')}</span>
-                                <Form.Control placeholder="Enter user name" name="user_name" onChange={formChange}/>
-                            </Form.Group>
-                            <Form.Group>
-                                <span>{logInState.formSubmitted && !logInState.formData['user_password'] &&
-                                formAlert('Password cannot be empty','font-italic alert-text-style')}</span>
-                                <Form.Control type="password" placeholder="Password"
-                                              name="user_password" onChange={formChange}/>
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
-                        </div>
-                    </Form>
+                <div className='container content-container-login'>
+                    <p className='card-title m-2'>Log-in Form</p>
 
+                    {
+                        dataLogInLoading && <div className="mt-5">
+                            <AppSpinner/>
+                        </div>
+                    }
+
+                    {
+                        !dataLogInLoading && <div className='container-fluid m-5 Login-container-form'>
+                            <Form onSubmit={submit}>
+                                <div className="form-content">
+                                    {logInErrors}
+                                    <Form.Group>
+                                    <span>{logInState.formSubmitted && !logInState.formData['user_name'] &&
+                                    formAlert('Please insert user name','font-italic alert-text-style')}</span>
+                                        <Form.Control placeholder="Enter user name" name="user_name" onChange={formChange}/>
+                                    </Form.Group>
+                                    <Form.Group>
+                                    <span>{logInState.formSubmitted && !logInState.formData['user_password'] &&
+                                    formAlert('Password cannot be empty','font-italic alert-text-style')}</span>
+                                        <Form.Control type="password" placeholder="Password"
+                                                      name="user_password" onChange={formChange}/>
+                                    </Form.Group>
+                                    <Button variant="primary" type="submit">
+                                        Submit
+                                    </Button>
+                                </div>
+                            </Form>
+                        </div>
+                    }
                 </div>
-            </div>
         </div>
     )
 }
