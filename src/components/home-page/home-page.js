@@ -12,9 +12,10 @@ const HomePage = () => {
     const { FaceBookBtn, fbLoginState } = useContext(ContextReducerFbLogin)
     const { logInState } = useContext(ContextReducerLogIn)
     const { AppSpinner } = useContext(RestContext)
+    const isSpinnerLoading = useRef(null)
 
-    const isDomRender = useRef(true)
-
+    const [isSubmitted , setIsSubmitted ] = useState()
+    const newsDataIndexRef = useRef(0)
     const {
         NEWS_ACTIONS: {SET_NEWS_DATA, SET_NEWS_INPUT_VALUE},
         newsDataState: {newsData, newsInputValue},
@@ -26,6 +27,8 @@ const HomePage = () => {
         errorState: false
     })
     const [isDataLoaded, setIsDataLoaded] = useState(false)
+
+
 
     const getNewsData = async () => {
         setDataLoadErr(false)
@@ -48,28 +51,32 @@ const HomePage = () => {
         newsDispatch({type: SET_NEWS_DATA, newsDataPayload: response.value})
     }
 
+
     const renderArticles = () => {
             let key = 1
-            return newsData?.map(elem => {
+            return newsData?.map((elem, index ) => {
+                newsDataIndexRef.current += index
                 key++
                 return <div key={key}>{NewsContent(elem)}</div>
             })
         }
+
     const searchFormRef = useRef()
     const focus = () => searchFormRef.current?.focus()
     useEffect(() => {
-        isDomRender.current = false
         return focus()
     },[])
 
-    let submitFormRef = useRef(false)
-    const [ placeholder , setPlaceholder ] = useState('Which news do you want to search for today')
-    const renderNewsContentIfLogin = () => {
 
+
+    const [ placeholder , setPlaceholder ] = useState('Which news do you want to search for today')
+
+
+    const renderNewsContentIfLogin = () => {
         const logInAlertWithSpinner = () => {
-            if (isDomRender.current) {
+            if (renderArticles().length !== newsDataIndexRef) {
                 return <AppSpinner/>
-            }else if(!isDomRender.current) {
+            }else {
                 return <div className="col-md-5 rounded p-3" style={{backgroundColor: 'rgba(17, 172, 243, 0.43)'}}>
                     <FaceBookBtn
                         render={renderProps => (
@@ -88,7 +95,7 @@ const HomePage = () => {
             event.preventDefault()
             if (searchFormRef.current.value !== '') {
                 setPlaceholder()
-                submitFormRef.current = true
+                setIsSubmitted(true)
                 getNewsData().catch(err => console.log(err))
                 searchFormRef.current.value = ''
 
@@ -96,13 +103,23 @@ const HomePage = () => {
                 setPlaceholder('Empty query!')
             }
         }
+
         if ( fbLoginState?.token || logInState?.userData.token ) {
+            const contentOrSpinner = () => {
+                if (isDataLoaded) {
+                    isSpinnerLoading.current = true
+                    return <AppSpinner/>
+                }else {
+                    isSpinnerLoading.current  = false
+                    return  renderArticles()
+                }
+            }
             return (
                 <Fragment>
                     {SearchingForm( placeholder , submitNewsForm,  (event) => {
                             newsDispatch({type: SET_NEWS_INPUT_VALUE, newsInputValuePayload: event.target.value})
                         }, searchFormRef)}
-                    {isDataLoaded ? <AppSpinner/> : renderArticles()}
+                    {contentOrSpinner()}
                     {dataLoadErr.errorState && JSON.stringify(dataLoadErr.error)}
                 </Fragment>
             )
@@ -125,7 +142,7 @@ const HomePage = () => {
         <Fragment>
             <NavBarMain/>
             {renderNewsContentIfLogin()}
-            {renderArticles().length === 0 && submitFormRef.current && isDomRender && <div className="alert-info p-5">
+            { renderArticles().length === newsDataIndexRef.current && isSubmitted && !isSpinnerLoading.current && <div className="alert-info p-5">
                 <h2>
                     Sorry. We did not find any results from your search. Try again.
                 </h2>

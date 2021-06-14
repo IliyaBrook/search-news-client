@@ -12,23 +12,24 @@ import ReducerRestContext from "./reducer-context/rest-reducer";
 
 
 
+
 const App = () => {
     return (
-        <ReducerRestContext>
-            <ReducerNewsContext>
-                <FacebookLoginContext>
-                    <ContextReducerLogIn>
-                        <Fragment>
-                            <Router>
-                                <Route path="/" exact component={() => <HomePage navBar={NavBarMain}/>}/>
-                                <Route path="/register" component={() => <Register navBarSecond={NavBarSecond}/>}/>
-                                <Route path="/login" component={() => <LogIn navBarSecond={NavBarSecond}/>}/>
-                            </Router>
-                        </Fragment>
-                    </ContextReducerLogIn>
-                </FacebookLoginContext>
-            </ReducerNewsContext>
-        </ReducerRestContext>
+            <ReducerRestContext>
+                <ReducerNewsContext>
+                    <FacebookLoginContext>
+                        <ContextReducerLogIn>
+                            <Fragment>
+                                <Router>
+                                    <Route path="/" exact component={() => <HomePage navBar={NavBarMain}/>}/>
+                                    <Route path="/register" component={() => <Register navBarSecond={NavBarSecond}/>}/>
+                                    <Route path="/login" component={() => <LogIn navBarSecond={NavBarSecond}/>}/>
+                                </Router>
+                            </Fragment>
+                        </ContextReducerLogIn>
+                    </FacebookLoginContext>
+                </ReducerNewsContext>
+            </ReducerRestContext>
     )
 }
 

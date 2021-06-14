@@ -47,7 +47,7 @@ const ReducerRestContext = ( { children } ) => {
     const [ navCollapseState , navCollapseDispatch ] = useReducer(navBarReducer, {collapse:false})
 
     return (
-        <RestContext.Provider value={{ navCollapseState , navCollapseDispatch , ACTIONS_NAVBAR , useOutSide , AppSpinner }}>
+        <RestContext.Provider value={{ navCollapseState , navCollapseDispatch , ACTIONS_NAVBAR , useOutSide , AppSpinner}}>
             { children }
         </RestContext.Provider>
     )
