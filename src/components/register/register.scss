@@ -1,27 +1,31 @@
 .content-container-login {
   padding: 2rem;
+
   .Login-container-form {
     border-radius: 8px;
-    background-color: #343a40!important;
+    background-color: #343a40 !important;
+
     .form-content {
       padding: 1rem;
     }
   }
 }
 
-@media screen and (max-width: 502px){
+@media screen and (max-width: 502px) {
   .content-container-login {
     padding: 0;
 
     .Login-container-form {
       border-radius: 0;
-      background-color: transparent!important;
+      background-color: transparent !important;
+
       .form-content {
         padding: 0;
       }
     }
   }
 }
-.alert-text-style{
+
+.alert-text-style {
   color: red;
 }

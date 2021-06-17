@@ -1,57 +1,47 @@
 import {Button, Form} from "react-bootstrap";
 import React, {useContext, useState} from "react";
-import {Link, useHistory } from "react-router-dom"
+import {Link, useHistory} from "react-router-dom"
 import {ContextReducerLogIn} from "../reducer-context/reducer-login";
-import {RestContext} from "../reducer-context/rest-reducer";
+import AppSpinner from "../hooks/spinner.hook";
+import useHttp from "../hooks/http.hook";
 
 const LogIn = (props) => {
-    const { logInStateDispatch , logInState ,LOGIN_ACTIONS } = useContext(ContextReducerLogIn)
-    const { AppSpinner  } = useContext(RestContext)
+
+    const {logInStateDispatch, logInState, LOGIN_ACTIONS} = useContext(ContextReducerLogIn)
     const history = useHistory()
-    const [ logInErrors , SetLogInErrors ] = useState()
-    const [ dataLogInLoading , setDataLogInLoading ] = useState(false)
+    const [logInErrors, SetLogInErrors] = useState()
+    const {loading, request} = useHttp(logInState)
 
     const submit = async (event) => {
+
         event.preventDefault()
-        setDataLogInLoading(true)
-        logInStateDispatch({type: LOGIN_ACTIONS.FORM_SUBMITTED_STATE,state:true})
+        logInStateDispatch({type: LOGIN_ACTIONS.FORM_SUBMITTED_STATE, state: true})
         if (logInState.formData['user_name'] && logInState.formData['user_password']) {
             const url = 'https://search-news-server.herokuapp.com/login'
-            const response = await fetch(url, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(logInState.formData)
-            }).then(res => {
-                if (res.status === 200) {
-                    return res.json()
-                }
-            }).catch((error) => console.log(error))
-            if(response?.token !== undefined){
-                setDataLogInLoading(false)
+            const response = await request(url, 'POST', logInState.formData)
+
+            if (response?.token !== undefined) {
                 logInStateDispatch({
-                    type: LOGIN_ACTIONS.SET_USER_DATA,updateUserData:{
-                        user_name:response?.user_name,
+                    type: LOGIN_ACTIONS.SET_USER_DATA, updateUserData: {
+                        user_name: response?.user_name,
                         name: `${response?.first_name} ${response?.last_name}`,
-                        email:response?.email,
+                        email: response?.email,
                         loggedIn: response.loggedIn,
                         user_id: response?.user_id,
-                        token:response.token
+                        token: response.token
                     }
                 })
-                localStorage.setItem('token',response.token)
+                localStorage.setItem('token', response.token)
                 localStorage.setItem('name', response.first_name + ' ' + response.last_name)
                 response?.loggedIn && history.push('/')
             }
-            return  !response.loggedIn &&  SetLogInErrors(() => {
-                return  formAlert('Login failed, please check your credentials!','alert alert-danger')
+            return !response?.loggedIn && SetLogInErrors(() => {
+                return formAlert('Login failed, please check your credentials!', 'alert alert-danger')
             })
         }
-
     }
     const navBar = () => {
+
         const additionalBtn = (
             <Link to="/register">
                 <Button className="ml-1" variant="secondary" active>
@@ -63,6 +53,7 @@ const LogIn = (props) => {
     }
 
     const formChange = (e) => {
+
         const {name, value} = e.target
         logInStateDispatch({
             type: LOGIN_ACTIONS.SET_USERNAME, formUpdate: {
@@ -76,47 +67,47 @@ const LogIn = (props) => {
             }
         })
     }
-    const formAlert = (alertText,styles) => {
+    const formAlert = (alertText, styles) => {
         return <div className={styles}>{alertText}</div>
     }
 
 
     return (
-        <div onClick={() => logInStateDispatch({type: LOGIN_ACTIONS.FORM_SUBMITTED_FALSE})}>
+        <div>
             {navBar()}
-                <div className='container content-container-login'>
-                    <p className='card-title m-2'>Log-in Form</p>
+            <div className='container content-container-login'>
+                <p className='card-title m-2'>Log-in Form</p>
 
-                    {
-                        dataLogInLoading && <div className="mt-5">
-                            <AppSpinner/>
-                        </div>
-                    }
+                {
+                    loading && <div className="mt-5">
+                        <AppSpinner/>
+                    </div>
+                }
 
-                    {
-                        !dataLogInLoading && <div className='container-fluid m-5 Login-container-form'>
-                            <Form onSubmit={submit}>
-                                <div className="form-content">
-                                    {logInErrors}
-                                    <Form.Group>
+                {
+                    !loading && <div className='container-fluid m-5 Login-container-form'>
+                        <Form onSubmit={submit}>
+                            <div className="form-content">
+                                {logInErrors}
+                                <Form.Group>
                                     <span>{logInState.formSubmitted && !logInState.formData['user_name'] &&
-                                    formAlert('Please insert user name','font-italic alert-text-style')}</span>
-                                        <Form.Control placeholder="Enter user name" name="user_name" onChange={formChange}/>
-                                    </Form.Group>
-                                    <Form.Group>
+                                    formAlert('Please insert user name', 'font-italic alert-text-style')}</span>
+                                    <Form.Control placeholder="Enter user name" name="user_name" onChange={formChange}/>
+                                </Form.Group>
+                                <Form.Group>
                                     <span>{logInState.formSubmitted && !logInState.formData['user_password'] &&
-                                    formAlert('Password cannot be empty','font-italic alert-text-style')}</span>
-                                        <Form.Control type="password" placeholder="Password"
-                                                      name="user_password" onChange={formChange}/>
-                                    </Form.Group>
-                                    <Button variant="primary" type="submit">
-                                        Submit
-                                    </Button>
-                                </div>
-                            </Form>
-                        </div>
-                    }
-                </div>
+                                    formAlert('Password cannot be empty', 'font-italic alert-text-style')}</span>
+                                    <Form.Control type="password" placeholder="Password"
+                                                  name="user_password" onChange={formChange}/>
+                                </Form.Group>
+                                <Button variant="primary" type="submit">
+                                    Submit
+                                </Button>
+                            </div>
+                        </Form>
+                    </div>
+                }
+            </div>
         </div>
     )
 }

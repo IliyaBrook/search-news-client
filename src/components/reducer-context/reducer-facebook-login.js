@@ -14,7 +14,7 @@ export const FacebookLoginContext = ({children}) => {
             case changeLogin:
                 return {...state, ...action.fbSetData}
             case SET_LOGOUT:
-                if (sessionStorage?.getItem('fbssls_1206500839845709') || localStorage?.getItem('fblst_1206500839845709')){
+                if (sessionStorage?.getItem('fbssls_1206500839845709') || localStorage?.getItem('fblst_1206500839845709')) {
                     sessionStorage.removeItem('fbssls_1206500839845709')
                     localStorage.removeItem('fblst_1206500839845709')
                     window.FB.logout()
@@ -34,8 +34,8 @@ export const FacebookLoginContext = ({children}) => {
 
     const fbBtnElemRef = useRef()
     const FaceBookBtn = ({
-        btnClassNames ,
-        render = renderProps => (<SocialIcon onClick={renderProps.onClick} network="facebook"/>)
+                             btnClassNames,
+                             render = renderProps => (<SocialIcon onClick={renderProps.onClick} network="facebook"/>)
                          }) => {
         const responseFacebook = (res) => {
             fbStateDispatch({

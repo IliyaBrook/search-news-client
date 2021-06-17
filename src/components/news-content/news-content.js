@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
-import './new-content.scss'
 
 const NewsContent = (newsData) => {
+
     return (
         <Fragment>
             <div className="article-wrapper min-vh-100 jumbotron-fluid">

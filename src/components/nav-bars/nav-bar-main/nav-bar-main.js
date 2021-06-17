@@ -7,14 +7,15 @@ import {ContextReducerLogIn} from "../../reducer-context/reducer-login";
 import {RestContext} from "../../reducer-context/rest-reducer";
 
 
-
 const NavBarMain = () => {
     const {FaceBookBtn, fbLoginState, fbStateDispatch} = useContext(ContextReducerFbLogin)
     const {userGreeting, logInState, logInStateDispatch} = useContext(ContextReducerLogIn)
 
-    const { useOutSide , navCollapseState:{ collapse }, navCollapseDispatch , ACTIONS_NAVBAR:{
-        NAVBAR_COLLAPSE,NAVBAR_TOGGLE
-    }} = useContext(RestContext)
+    const {
+        useOutSide, navCollapseState: {collapse}, navCollapseDispatch, ACTIONS_NAVBAR: {
+            NAVBAR_COLLAPSE, NAVBAR_TOGGLE
+        }
+    } = useContext(RestContext)
 
     const logOutBtn = () => {
         if (fbLoginState?.token || logInState?.userData.token) {
@@ -40,31 +41,33 @@ const NavBarMain = () => {
 
     const navRef = useRef()
 
-    useOutSide( navRef, navCollapseDispatch,{type:NAVBAR_COLLAPSE} )
+    useOutSide(navRef, navCollapseDispatch, {type: NAVBAR_COLLAPSE})
 
     return (
-        <div  className="navbar-wrapper ">
-            <Navbar  collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top" expanded={ collapse } ref={navRef}>
+        <div className="navbar-wrapper ">
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top" expanded={collapse} ref={navRef}>
                 <div className="my-links-styles">
                     <Link to="/">Home Page</Link>
                 </div>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={() => navCollapseDispatch({type:NAVBAR_TOGGLE}) }/>
-                <Navbar.Collapse id="responsive-navbar-nav" >
+                <Navbar.Toggle aria-controls="responsive-navbar-nav"
+                               onClick={() => navCollapseDispatch({type: NAVBAR_TOGGLE})}/>
+                <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
                         {logOutBtn()}
                     </Nav>
                     <Nav>
                         {!logInState.userData?.token && !fbLoginState?.token && LoginBtn()}
                         {!logInState.userData?.token && !fbLoginState?.token && registrationBtn()}
-                        {!logInState.userData?.token && !fbLoginState?.token && <FaceBookBtn btnClassNames={"d-none d-lg-block"}/>}
-                        {/*if size MEDIUM*/}
-                        {!logInState.userData?.token && !fbLoginState?.token && <FaceBookBtn btnClassNames={'d-sm-block d-md-block d-lg-none'}
-                                                            render={renderProps => (
-                                                                <div onClick={renderProps.onClick} style={{
-                                                                    color:'#4267B2',
-                                                                    backgroundColor:'#343a40'
-                                                                }}>With facebook</div>
-                                                            )}
+                        {!logInState.userData?.token && !fbLoginState?.token &&
+                        <FaceBookBtn btnClassNames={"d-none d-lg-block"}/>}
+                        {!logInState.userData?.token && !fbLoginState?.token &&
+                        <FaceBookBtn btnClassNames={'d-sm-block d-md-block d-lg-none'}
+                                     render={renderProps => (
+                                         <div onClick={renderProps.onClick} style={{
+                                             color: '#4267B2',
+                                             backgroundColor: '#343a40'
+                                         }}>With facebook</div>
+                                     )}
                         />}
                         {userGreeting()}
                     </Nav>

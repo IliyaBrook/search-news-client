@@ -20,12 +20,12 @@ const ReducerLogin = ({children}) => {
     const fbToken = localStorage.getItem('fblst_1206500839845709')
     const backendDbToken = localStorage.getItem('token')
 
-    const [isLoginDataLoading , setLoginDataLoading ] = useState(false)
-    useEffect( () => {
+    const [isLoginDataLoading, setLoginDataLoading] = useState(false)
+    useEffect(() => {
         setLoginDataLoading(true)
         if (!fbToken && backendDbToken) {
-            const server_response =  fetch('https://search-news-server.herokuapp.com/token', {
-                mode:'cors',
+            const server_response = fetch('https://search-news-server.herokuapp.com/token', {
+                    mode: 'cors',
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${backendDbToken}`
@@ -70,7 +70,7 @@ const ReducerLogin = ({children}) => {
             case LOGIN_ACTIONS.SET_TOKEN:
                 return {...state, token: action.token}
             case LOGIN_ACTIONS.SET_LOGOUT:
-                if (localStorage.getItem('token')){
+                if (localStorage.getItem('token')) {
                     localStorage.removeItem('token')
                     localStorage.removeItem('name')
                 }
@@ -107,7 +107,8 @@ const ReducerLogin = ({children}) => {
                     <Fragment>
                         <div className="d-flex w-75 justify-content-center">
                             <div className="userGreeting">{fbLoginState.name}</div>
-                            <img className="ml-2 img-thumbnail p-0 greetingImg" src={fbLoginState.picture} alt="Facebook_img"/>
+                            <img className="ml-2 img-thumbnail p-0 greetingImg" src={fbLoginState.picture}
+                                 alt="Facebook_img"/>
                         </div>
                     </Fragment>
                 )
