@@ -1,3 +1,5 @@
+$btn-Color:#17a2b8;
+
 .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
   width: 80% !important;
 }
@@ -50,3 +52,39 @@
   color: white;
   letter-spacing: 1px;
 }
+
+.fb-bar {
+  width: 100% !important;
+  display: block!important;
+  line-height: 35px;
+  margin-top: 1px;
+  padding-left: 30px!important;
+  div{
+    margin-top: 5px;
+  }
+}
+.navBarStyles{
+  height: inherit!important;
+  line-height: inherit!important;
+}
+
+.navControls{
+  max-width: 100%!important;
+  width: 100%!important;
+}
+.userName{
+  white-space: nowrap;
+  background-color:$btn-Color;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.btn-color{
+  background-color: $btn-Color;
+  cursor: pointer;
+}
+
+.btn-pointer{
+  cursor: pointer;
+}
+

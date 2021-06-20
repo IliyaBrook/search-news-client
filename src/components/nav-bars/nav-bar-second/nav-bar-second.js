@@ -7,8 +7,8 @@ const NavBarSecond = (additionalButtonsOp) => {
     return (
         <Fragment>
             <div>
-                <Navbar collapseOnSelect bg="dark" variant="dark">
-                    <div className="bg-dark">
+                <Navbar collapseOnSelect bg="#424242 grey darken-3" variant="dark">
+                    <div className="#424242 grey darken-3">
                         <Link to="/">
                             <Button variant="secondary" active>
                                 To Home Page

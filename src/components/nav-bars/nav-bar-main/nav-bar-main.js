@@ -1,78 +1,145 @@
-import React, {useContext, useRef} from "react";
-import {Nav, Navbar} from "react-bootstrap";
+import React, {useContext, useRef, useEffect} from "react";
 import './nav-bar.scss'
 import {Link} from "react-router-dom"
 import {ContextReducerFbLogin} from "../../reducer-context/reducer-facebook-login";
 import {ContextReducerLogIn} from "../../reducer-context/reducer-login";
 import {RestContext} from "../../reducer-context/rest-reducer";
 
-
 const NavBarMain = () => {
     const {FaceBookBtn, fbLoginState, fbStateDispatch} = useContext(ContextReducerFbLogin)
-    const {userGreeting, logInState, logInStateDispatch} = useContext(ContextReducerLogIn)
-
+    const {logInState, logInStateDispatch} = useContext(ContextReducerLogIn)
     const {
-        useOutSide, navCollapseState: {collapse}, navCollapseDispatch, ACTIONS_NAVBAR: {
-            NAVBAR_COLLAPSE, NAVBAR_TOGGLE
+        useOutSide, navCollapseDispatch, ACTIONS_NAVBAR: {
+            NAVBAR_COLLAPSE,
         }
     } = useContext(RestContext)
 
     const logOutBtn = () => {
         if (fbLoginState?.token || logInState?.userData.token) {
-            return <div className="logOutBtnWrapper">
-                <div onClick={() => {
+            return (
+                <div className="btn-pointer" onClick={() => {
                     logInStateDispatch({type: 'SET_LOGOUT'})
                     fbStateDispatch({type: 'SET_LOGOUT'})
-                }} className="my-links-styles text-danger btn logoutBtn">Logout
+                }}>Logout
                 </div>
-            </div>
+            )
         }
     }
 
     const registrationBtn = () => {
-        return <div className="my-links-styles"><Link to="/register">Registration</Link></div>
+        if (!logInState.userData?.token && !fbLoginState?.token) {
+            return (
+                <div>
+                    <Link to="/register">Registration</Link>
+                </div>
+            )
+        }
     }
 
     const LoginBtn = () => {
-        return <div className="my-links-styles nav-link active">
-            <Link to="/login">Login</Link>
-        </div>
+        if (!logInState.userData?.token && !fbLoginState?.token) {
+            return (
+                <div className="logInBtnStyles">
+                    <Link to="/login">Login</Link>
+                </div>
+            )
+        }
     }
 
     const navRef = useRef()
 
     useOutSide(navRef, navCollapseDispatch, {type: NAVBAR_COLLAPSE})
 
-    return (
-        <div className="navbar-wrapper ">
-            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top" expanded={collapse} ref={navRef}>
-                <div className="my-links-styles">
-                    <Link to="/">Home Page</Link>
+
+    const sidenav = useRef()
+    useEffect(() => {
+        window.M.Sidenav.init(sidenav.current, {})
+    }, [])
+
+    const userNamesGreetingFromFb = () => {
+        return (
+            <div className="col justify-content-end d-flex mt-1">
+                <div className="shadow card-panel  userName d-none d-md-flex justify-content-center p-2">
+                    <div className="userName">
+                        {logInState.userData.name}
+                        {fbLoginState.name}
+                    </div>
                 </div>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav"
-                               onClick={() => navCollapseDispatch({type: NAVBAR_TOGGLE})}/>
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="mr-auto">
-                        {logOutBtn()}
-                    </Nav>
-                    <Nav>
-                        {!logInState.userData?.token && !fbLoginState?.token && LoginBtn()}
-                        {!logInState.userData?.token && !fbLoginState?.token && registrationBtn()}
-                        {!logInState.userData?.token && !fbLoginState?.token &&
-                        <FaceBookBtn btnClassNames={"d-none d-lg-block"}/>}
-                        {!logInState.userData?.token && !fbLoginState?.token &&
-                        <FaceBookBtn btnClassNames={'d-sm-block d-md-block d-lg-none'}
-                                     render={renderProps => (
-                                         <div onClick={renderProps.onClick} style={{
-                                             color: '#4267B2',
-                                             backgroundColor: '#343a40'
-                                         }}>With facebook</div>
-                                     )}
-                        />}
-                        {userGreeting()}
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
+            </div>
+        )
+    }
+
+    return (
+        <div>
+            <nav className="#424242 grey darken-3 navBarStyles">
+                <div className="container navControls shadow">
+
+                    <div className="row d-flex align-items-center m-0">
+
+                        <div data-target="slide-out" className="sidenav-trigger col p-1 d-md-none draggable">
+                            <i className="material-icons">menu</i>
+                        </div>
+
+                        <div className="col d-none d-md-inline-flex ">
+
+                            <div className="container  d-flex w-100 h-100 mt-3">
+                                <div className="row w-100 h-100">
+                                    <div className="col">
+                                        {logOutBtn()}
+                                        {LoginBtn()}
+                                    </div>
+                                    <div className="col s1 d-none d-md-flex">
+                                        {!logInState.userData?.token && !fbLoginState?.token &&
+                                        registrationBtn()}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {[...Array(4)].map((_, index) => <div key={index} className="col"/>)}
+
+                        {logInState.userData?.token && userNamesGreetingFromFb()}
+                        {fbLoginState?.token && userNamesGreetingFromFb()}
+
+                        {
+                            !logInState.userData?.token && <div className="p-2 d-none d-md-flex">
+                                <div className="">
+                                    {!logInState.userData?.token && !fbLoginState?.token &&
+                                    <FaceBookBtn/>}
+                                </div>
+                                {fbLoginState?.token &&
+                                <img className="circle" src={fbLoginState.picture} alt="Facebook_img"/>}
+                            </div>
+                        }
+                    </div>
+                </div>
+            </nav>
+
+            <ul id="slide-out" className="sidenav #eceff1 blue-grey lighten-5" ref={sidenav}>
+                <li>
+                    <div className="user-view">
+                        {fbLoginState?.token && <img className="border border-dark" src={fbLoginState.picture}
+                                                     alt="Facebook_img"/>}
+                    </div>
+                    <div>
+                        <h5 className="left-align pl-3 ">
+                            {logInState.userData.name}
+                            {fbLoginState.name}
+                        </h5>
+                    </div>
+                    <div className="divider"/>
+                </li>
+                <div className="container w-100 p-0 p-1">
+                    <div className="row">
+                        <div className="col-12 text-info w-100 p-4">
+                            <div className="waves-effect waves-light btn-small btn-color btn-pointer">
+                                {logOutBtn()}
+                                {LoginBtn()}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ul>
         </div>
     )
 }

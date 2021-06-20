@@ -75,19 +75,19 @@ const LogIn = (props) => {
     return (
         <div>
             {navBar()}
-            <div className='container content-container-login'>
+            <div className='container content-container-login '>
                 <p className='card-title m-2'>Log-in Form</p>
 
                 {
-                    loading && <div className="mt-5">
+                    loading && <div className="mt-5 ">
                         <AppSpinner/>
                     </div>
                 }
 
                 {
-                    !loading && <div className='container-fluid m-5 Login-container-form'>
+                    !loading && <div className='container-fluid Login-container-form p-0'>
                         <Form onSubmit={submit}>
-                            <div className="form-content">
+                            <div className="form-content rounded #eceff1 blue-grey lighten-5">
                                 {logInErrors}
                                 <Form.Group>
                                     <span>{logInState.formSubmitted && !logInState.formData['user_name'] &&

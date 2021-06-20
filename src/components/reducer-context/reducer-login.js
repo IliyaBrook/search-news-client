@@ -100,13 +100,12 @@ const ReducerLogin = ({children}) => {
     })
     const userGreeting = () => {
         const name = () => {
-            if (logInState.userData?.token) {
-                return <div className="userGreeting">{logInState.userData.name}</div>
+            if (logInState.userData?.token && fbLoginState?.token) {
+                return <div >{logInState.userData.name}</div>
             } else if (fbLoginState?.token) {
                 return (
                     <Fragment>
-                        <div className="d-flex w-75 justify-content-center">
-                            <div className="userGreeting">{fbLoginState.name}</div>
+                        <div className="">
                             <img className="ml-2 img-thumbnail p-0 greetingImg" src={fbLoginState.picture}
                                  alt="Facebook_img"/>
                         </div>
