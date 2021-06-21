@@ -5,7 +5,7 @@ const TestNewsContent = (newsData) => {
     return (
         <Fragment>
             <div className="pl-4 pr-4">
-                <div className="container rounded border
+                <div className="container-xxl container-xl rounded border
                 shadow p-xl-5 mt-5 w-auto
                 ">
                     <div className="p-4">
