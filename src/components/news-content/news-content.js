@@ -1,10 +1,10 @@
 import './news-content.scss'
 import React, {Fragment} from "react";
 
-const TestNewsContent = (newsData) => {
+const NewsContent = (newsData) => {
     return (
         <Fragment>
-            <div className="pl-4 pr-4">
+            <div className="pl-1 pr-1 pl-md-4 pr-md-4 pl-xl-5 pr-xl-5">
                 <div className="container-xxl container-xl rounded border
                 shadow p-xl-5 mt-5 w-auto
                 ">
@@ -48,4 +48,4 @@ const TestNewsContent = (newsData) => {
         </Fragment>
     )
 }
-export default TestNewsContent;
+export default NewsContent;
