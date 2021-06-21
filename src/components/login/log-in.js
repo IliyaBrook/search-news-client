@@ -4,6 +4,7 @@ import {Link, useHistory} from "react-router-dom"
 import {ContextReducerLogIn} from "../reducer-context/reducer-login";
 import AppSpinner from "../hooks/spinner.hook";
 import useHttp from "../hooks/http.hook";
+import './log-in.scss'
 
 const LogIn = (props) => {
 
@@ -11,6 +12,7 @@ const LogIn = (props) => {
     const history = useHistory()
     const [logInErrors, SetLogInErrors] = useState()
     const {loading, request} = useHttp(logInState)
+
 
     const submit = async (event) => {
 
@@ -75,8 +77,8 @@ const LogIn = (props) => {
     return (
         <div>
             {navBar()}
-            <div className='container content-container-login '>
-                <p className='card-title m-2'>Log-in Form</p>
+            <div className='container content-container-login rounded p-1 mt-5 #546e7a blue-grey darken-1'>
+                <p className='card-title m-2 text-white'>Log-in Form</p>
 
                 {
                     loading && <div className="mt-5 ">
@@ -85,9 +87,9 @@ const LogIn = (props) => {
                 }
 
                 {
-                    !loading && <div className='container-fluid Login-container-form p-0'>
+                    !loading && <div className='container-fluid Login-container-form p-0 mb-4'>
                         <Form onSubmit={submit}>
-                            <div className="form-content rounded #eceff1 blue-grey lighten-5">
+                            <div className="form-content rounded #eceff1 blue-grey lighten-5 p-2">
                                 {logInErrors}
                                 <Form.Group>
                                     <span>{logInState.formSubmitted && !logInState.formData['user_name'] &&

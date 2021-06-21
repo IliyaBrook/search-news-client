@@ -1,27 +1,45 @@
+import './news-content.scss'
 import React, {Fragment} from "react";
 
-const NewsContent = (newsData) => {
+const TestNewsContent = (newsData) => {
     return (
         <Fragment>
-            <div className="article-wrapper min-vh-100 jumbotron-fluid">
-                <div className="container-fluid w-100">
-                    <div className="row p-3">
-                        <div className="col-sm-4"/>
+            <div className="pl-4 pr-4">
+                <div className="container rounded border shadow
+                p-md-5 p-lg-5 p-xl-5 mt-5 w-auto">
+                    <div className="p-4">
+                        <div className="row d-inline-flex ">
 
-                        <img src={newsData?.image?.thumbnail?.contentUrl} alt="articles_imt" className="img-fluid"/>
-                        <div className="col-sm-4 article-header">
-                            <p className="">
-                                Publication date: {newsData?.datePublished.slice(0,10)}</p>
-                            {newsData?.name}
+                            <div className="col col-auto">
+                                <img src={newsData?.image?.thumbnail?.contentUrl}
+                                     alt="articles_imt"
+                                     className="responsive-img rounded shadow"/>
+                            </div>
+
+                            <div className="col d-flex flex-column justify-content-around sha">
+                                <p className="text-monospace pubDate m-0">Publication
+                                    date: {newsData?.datePublished.slice(0, 10)}</p>
+                                <p className="text-monospace articleName m-0 ">
+                                    {newsData?.name}
+                                </p>
+                            </div>
                         </div>
-                        <div className="col-sm-4"/>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-12 jumbotron col-article-paragraph">
-                            <p className="font-monospace flow-text" style={{whiteSpace:'normal'}}>
-                                {newsData?.description}
-                            </p>
-                            <a href={newsData?.url}>News Source</a>/>
+
+                        <div className="row descriptionText">
+                            <div className="col">
+                                <div className="col jumbotron rounded #eceff1 blue-grey lighten-5">
+                                    <p className="font-monospace flow-text text-start p-2 text-justify
+                                    ">{newsData?.description}</p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className='btn'>
+                            <a href={newsData?.url} className="">
+                                <p className="m-0 black-text">
+                                    To news Source
+                                </p>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -29,4 +47,4 @@ const NewsContent = (newsData) => {
         </Fragment>
     )
 }
-export default NewsContent;
+export default TestNewsContent;

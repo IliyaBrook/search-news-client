@@ -1,5 +1,5 @@
 import {Button, Form} from "react-bootstrap"
-import React, {useState, useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import {Link} from "react-router-dom"
 import './register.scss'
 import {useHistory} from "react-router"
@@ -32,6 +32,8 @@ const Register = (props) => {
             }
         }))
     }
+
+
     const {request, loading} = useHttp(formInputs)
     const history = useHistory()
     const submit = async (event) => {
@@ -73,10 +75,11 @@ const Register = (props) => {
             return formAlert(errorText)
         }
     }
+
     return (
         <div>
             {navBar()}
-            <div className='container content-container-login'>
+            <div className='container rounded #eceff1 blue-grey lighten-5 p-3 mt-5'>
                 <p className='card-title m-2'>Registration Form</p>
                 {
                     loading && <div className="mt-5">

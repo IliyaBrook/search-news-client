@@ -1,12 +1,13 @@
-import React, {Fragment, useContext, useEffect, useRef, useState} from "react";
+import React, {Fragment, useContext, useEffect, useRef, useState} from "react"
 import './home-page.scss'
-import NavBarMain from "../nav-bars/nav-bar-main/nav-bar-main";
-import NewsContent from "../news-content/news-content";
-import SearchingForm from "../searching-form/searching-form";
-import {ContextNews} from "../reducer-context/reducer-news";
-import {ContextReducerFbLogin} from "../reducer-context/reducer-facebook-login";
-import {ContextReducerLogIn} from "../reducer-context/reducer-login";
-import AppSpinner from "../hooks/spinner.hook";
+import NavBarMain from "../nav-bars/nav-bar-main/nav-bar-main"
+import NewsContent from "../news-content/news-content"
+import SearchingForm from "../searching-form/searching-form"
+import {ContextNews} from "../reducer-context/reducer-news"
+import {ContextReducerFbLogin} from "../reducer-context/reducer-facebook-login"
+import {ContextReducerLogIn} from "../reducer-context/reducer-login"
+import AppSpinner from "../hooks/spinner.hook"
+
 
 const HomePage = () => {
     const {FaceBookBtn, fbLoginState} = useContext(ContextReducerFbLogin)
@@ -61,12 +62,13 @@ const HomePage = () => {
     }
 
     const searchFormRef = useRef()
-    const focus = () => searchFormRef.current?.focus()
 
     useEffect(() => {
-        return focus()
-    }, [])
-    const [placeholder, setPlaceholder] = useState('Which news do you want to search for today')
+        return searchFormRef.current?.focus()
+    })
+
+    const [placeholder, setPlaceholder] = useState('What do you search for?')
+
 
     const renderNewsContentIfLogin = () => {
 
@@ -94,10 +96,9 @@ const HomePage = () => {
         }
 
         const submitNewsForm = (event) => {
-
             event.preventDefault()
             if (searchFormRef.current.value !== '') {
-                setPlaceholder()
+                setPlaceholder('')
                 setIsSubmitted(true)
                 getNewsData().catch(err => console.log(err))
                 searchFormRef.current.value = ''
@@ -140,7 +141,6 @@ const HomePage = () => {
             )
         }
     }
-
     return (
         <Fragment>
             <NavBarMain/>
