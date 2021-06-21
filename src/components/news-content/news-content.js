@@ -5,8 +5,9 @@ const TestNewsContent = (newsData) => {
     return (
         <Fragment>
             <div className="pl-4 pr-4">
-                <div className="container rounded border shadow
-                p-md-5 p-lg-5 p-xl-5 mt-5 w-auto">
+                <div className="container rounded border
+                shadow p-lg-5 p-xl-5 mt-5w-auto
+                ">
                     <div className="p-4">
                         <div className="row d-inline-flex ">
 
