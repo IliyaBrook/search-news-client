@@ -6,7 +6,7 @@ const TestNewsContent = (newsData) => {
         <Fragment>
             <div className="pl-4 pr-4">
                 <div className="container rounded border
-                shadow p-lg-5 p-xl-5 mt-5w-auto
+                shadow p-xl-5 mt-5 w-auto
                 ">
                     <div className="p-4">
                         <div className="row d-inline-flex ">
@@ -18,7 +18,7 @@ const TestNewsContent = (newsData) => {
                             </div>
 
                             <div className="col d-flex flex-column justify-content-around sha">
-                                <p className="text-monospace pubDate ">Publication
+                                <p className="text-monospace pubDate mb-3">Publication
                                     date: {newsData?.datePublished.slice(0, 10)}</p>
                                 <p className="text-monospace articleName m-0 ">
                                     {newsData?.name}
