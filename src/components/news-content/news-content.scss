@@ -1,0 +1,27 @@
+.row {
+  div {
+    .pubDate {
+      text-decoration: underline;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.2px;
+      font-size: 120%;
+    }
+
+    .articleName {
+      font-size: 130%;
+    }
+  }
+}
+
+
+@media screen and (max-width: 650px) {
+  .descriptionText {
+    div {
+      div {
+        p {
+          font-size: 150%;
+        }
+      }
+    }
+  }
+}
