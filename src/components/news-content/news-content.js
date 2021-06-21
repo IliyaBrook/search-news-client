@@ -18,7 +18,7 @@ const TestNewsContent = (newsData) => {
                             </div>
 
                             <div className="col d-flex flex-column justify-content-around sha">
-                                <p className="text-monospace pubDate m-0">Publication
+                                <p className="text-monospace pubDate ">Publication
                                     date: {newsData?.datePublished.slice(0, 10)}</p>
                                 <p className="text-monospace articleName m-0 ">
                                     {newsData?.name}
