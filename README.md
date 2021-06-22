@@ -1,3 +1,11 @@
+# this project can search for news on all popular news resources
+
+registration required
+or sign in with facebook method
+
+# https://search-news-client.netlify.app/
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
